@@ -1,0 +1,17 @@
+@use 'src/assets/scss/colors.scss' as *;
+
+.main-menu-container {
+    background-color: $component-color;
+    height: 100%;
+    padding: 20px;
+
+    .btn {
+        width: 100%;
+    }
+
+    .active-link {
+        .btn {
+            background-color: $active-color;
+        }
+    }
+}

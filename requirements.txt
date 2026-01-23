@@ -1,0 +1,12 @@
+pyinstaller
+gtts
+openai
+flask
+flask-cors
+requests
+moviepy
+ffmpeg
+pydub
+PyPDF2
+pytesseract
+Pillow
