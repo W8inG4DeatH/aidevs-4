@@ -1,0 +1,27 @@
+@use 'src/assets/scss/colors.scss' as *;
+
+.prompts-database-container {
+    .files-list-container {
+        border-bottom: 1px solid $grey;
+        padding-top: 5px;
+        overflow-y: auto;
+        max-height: 200px;
+
+        .file-container {
+            cursor: pointer;
+
+            &.selected {
+                font-weight: bold;
+            }
+
+            .selector,
+            .file-content {
+                margin-left: 10px;
+            }
+        }
+    }
+    .content-container,
+    .prompt-editor-container {
+        padding-top: 5px;
+    }
+}
