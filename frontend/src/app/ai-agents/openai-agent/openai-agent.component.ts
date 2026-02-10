@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {
   IAiFile,
   IOpenAIModel,
@@ -8,7 +7,7 @@ import {
   AiTemperatureEnum,
   AiMaxTokensEnum
 } from 'src/app/common-components/common-components.interfaces';
-import { environment } from 'src/environments/environment';
+import { OpenAiAgentService } from './openai-agent.service';
 
 @Component({
   selector: 'openai-agent',
@@ -23,15 +22,14 @@ export class OpenAiAgentComponent implements OnInit {
   public openAiModel: IOpenAIModel = IOpenAIModel.GPT5Mini;
   public myAIPrompt: string = '';
 
-  // NEW OPTIONS
-  public temperature: AiTemperatureEnum = AiTemperatureEnum.VeryLow;  // backend ignores this for GPT-5 Responses (per your error), but keep for future
+  public temperature: AiTemperatureEnum = AiTemperatureEnum.VeryLow;
   public maxTokens: AiMaxTokensEnum = AiMaxTokensEnum.M;
   public reasoning: AiReasoningEffortEnum = AiReasoningEffortEnum.Minimal;
   public textVerbosity: AiTextVerbosityEnum = AiTextVerbosityEnum.Medium;
-  public responseFileName: string = '';      // optional: without ".txt"
-  public withCleanedRaw: boolean = true;     // keep previous behavior
+  public responseFileName: string = '';
+  public withCleanedRaw: boolean = true;
 
-  constructor(private http: HttpClient) { }
+  constructor(private openAiAgentService: OpenAiAgentService) { }
 
   ngOnInit() { }
 
@@ -42,7 +40,6 @@ export class OpenAiAgentComponent implements OnInit {
       const payload = {
         openAiModel: this.openAiModel,
         myAIPrompt: this.myAIPrompt,
-
         temperature: this.temperature,
         maxTokens: this.maxTokens,
         reasoning: this.reasoning,
@@ -51,13 +48,8 @@ export class OpenAiAgentComponent implements OnInit {
         withCleanedRaw: this.withCleanedRaw
       };
 
-      this.http.post<{ choices: Array<{ message: { content: string } }> }>(
-        `${environment.apiUrl}/ai_agents/openai_agent/send-prompt`,
-        payload
-      ).subscribe({
+      this.openAiAgentService.sendPrompt(payload).subscribe({
         next: (response) => {
-          console.log('Response:', response);
-
           const content = response?.choices?.[0]?.message?.content;
           if (content) {
             this.aiResponse = content;
