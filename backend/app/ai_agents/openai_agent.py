@@ -35,12 +35,23 @@ def normalize_text_verbosity(val: str) -> str:
     return v if v in allowed else "medium"
 
 
-@backoff.on_exception(backoff.expo, RateLimitError, max_tries=6)
+def _should_retry(exc):
+    """Retry on rate limit (429) and server errors (5xx)."""
+    if isinstance(exc, requests.exceptions.HTTPError) and exc.response is not None:
+        return exc.response.status_code == 429 or exc.response.status_code >= 500
+    return isinstance(exc, RateLimitError)
+
+
+@backoff.on_exception(
+    backoff.expo,
+    (RateLimitError, requests.exceptions.HTTPError),
+    max_tries=4,
+    giveup=lambda e: not _should_retry(e),
+)
 def responses_with_backoff(payload: dict, headers: dict):
     url = current_app.config["OPENAI_RESPONSES_API_URL"]
     response = requests.post(url, json=payload, headers=headers, timeout=120)
 
-    # Critical: log error body so you see exact param issues
     if not response.ok:
         logging.error(f"OpenAI error {response.status_code}: {response.text}")
 

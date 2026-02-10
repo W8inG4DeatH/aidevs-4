@@ -2,8 +2,7 @@
 api.keys
 
 # files
-files/sounds
-files/movies
+files
 
 # Node.js
 frontend/node_modules/

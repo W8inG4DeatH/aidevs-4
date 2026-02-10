@@ -23,7 +23,7 @@ export class MainMenuComponent implements OnInit {
                 RouterLink: '/dashboard',
             },
             {
-                DisplayName: 'Lesson s00e01',
+                DisplayName: 'Lesson s00e03',
                 RouterLink: '/lessons/lesson-s00e01',
             },
             {
