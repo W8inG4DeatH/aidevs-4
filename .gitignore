@@ -1,5 +1,5 @@
-## API keys
-api.keys
+# Local config with secrets (use config.example.py as template)
+backend/app/ai_agents/config.py
 
 # files
 files

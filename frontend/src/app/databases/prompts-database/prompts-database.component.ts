@@ -12,7 +12,7 @@ export class PromptsDatabaseComponent implements OnInit {
     @Output()
     selectPromptEmitter = new EventEmitter<IAiFile | null>();
 
-    public projectDirectoryPath: string = 'c:/python/aiworks-prompts';
+    public projectDirectoryPath: string = 'c:/_AI_prompts_';
     files: IAiFile[] = [];
     selectedFile: IAiFile | null = null;
     editMode: boolean = false;

@@ -4,8 +4,8 @@ openai
 flask
 flask-cors
 requests
+backoff
 moviepy
-ffmpeg
 pydub
 PyPDF2
 pytesseract
